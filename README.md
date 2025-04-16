@@ -3,6 +3,24 @@
 ## Overview
 This project processes the UK financial sanctions list to create a structured dataset suitable for comparing against customer records.
 
+# #Project Structure
+
+├── data/
+│   └── UK_Sanctions_List.xlsx         # Raw input data
+├── output/
+│   └── UK_Sanctions_Processed.csv     # Cleaned, structured data
+├── scripts/
+│   ├── transform_sanctions_data.py    # Main processing script
+│   └── transform_notebook.ipynb       # Exploratory version / development notebook
+├── env/                               # Python virtual environment (not uploaded)
+├── requirements.txt                   # Dependencies
+├── README.md                          # Project documentation
+
+## Code Files
+
+- scripts/transform_sanctions_data.py  This is the main Python script that cleans and processes the UK financial sanctions list.
+- scripts/transform_notebook.ipynb   An exploratory Jupyter notebook where the initial version of the processing logic was developed.
+
 ## Requirements
 - Python 3.7+
 - pandas
