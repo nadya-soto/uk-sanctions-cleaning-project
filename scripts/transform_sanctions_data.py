@@ -96,13 +96,12 @@ def clean_nationalities(nat):
     if pd.isna(nat):
         return []
     
-    # Reemplazar puntos, comas y dividir por delimitadores
     nat = nat.replace(';', '.').replace(',', '.')
     
-    # Extraer posibles países, eliminando números y paréntesis como (1), (2), etc.
+    # deleting  (1), (2), etc from countries
     parts = re.split(r"\(?\d+\)?\.?", nat)
     
-    # Limpiar cada parte: quitar espacios, puntos finales, etc.
+    # clean
     cleaned = [part.strip().rstrip('.') for part in parts if part.strip()]
     
     return cleaned
@@ -113,17 +112,13 @@ def get_primary_name(group):
     
     # Filtrar el "Primary name" según el Alias Type
     primary_row = group[group['Alias Type'] == 'Primary name']
-    
-    # Si hay un "Primary name" claro, lo devolvemos
     if not primary_row.empty:
         return primary_row['full_name'].iloc[0]
     
-    # Si no hay "Primary name", tomamos el primer full_name no nulo
     non_null_names = group['full_name'].dropna()
     if not non_null_names.empty:
         return non_null_names.iloc[0]
     
-    # Si no hay nombres disponibles, devolvemos None
     return None
 
 def get_aliases(group):
@@ -138,15 +133,11 @@ def get_addresses(group):
 
 def get_related_countries(group):
     """Extract related countries from Country and Nationality fields"""
-    # Extraer países de la columna 'Country'
     countries = group['Country'].dropna().unique().tolist()
     
-    # Si no hay países, intentamos usar la columna 'Nationality' (limpiada)
     if not countries and 'Nationality' in group:
-        # Limpiar la nacionalidad antes de agregarla
         nationality = group['Nationality'].dropna().unique().tolist()
         nationality_cleaned = [clean_nationalities(nat) for nat in nationality]
-        # Aplanar la lista de listas y eliminar duplicados
         return list(set([item for sublist in nationality_cleaned for item in sublist]))
     
     return countries
@@ -225,7 +216,7 @@ def analyze_data_quality(df):
     # Print duplicates
     if not duplicated_rows.empty:
         print("\nDuplicated Entries:")
-        print(duplicated_rows)  # Imprime todas las filas duplicadas
+        print(duplicated_rows)  
     
     quality_report = {
         'total_records': len(df),
